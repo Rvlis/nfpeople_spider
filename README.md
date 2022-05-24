@@ -10,7 +10,7 @@
     }
 ```
 
-以 __(报道)[https://www.nfpeople.com/category/2]__ 为例， 对应URL为 `https://www.nfpeople.com/category/2`
+以 __[报道](https://www.nfpeople.com/category/2)__ 为例， 对应URL为 `https://www.nfpeople.com/category/2`
 
 ## 运行
 ```python
