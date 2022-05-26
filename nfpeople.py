@@ -5,41 +5,10 @@ from tqdm import tqdm
 import csv
 import re
 
-# req = requests.get("http://www.nfpeople.com/")
-# soup = BeautifulSoup(req, "lxml")
-
-# nfpeople categories 1-25
-# http://www.nfpeople.com/category/1?page=1
-
-# from email import header
-# import requests
-# from bs4 import BeautifulSoup
-
-# class NFPeople:
-#     def __init__(self):
-#        self.URL = 'http://www.nfpeople.com/category'
-#        self.starnum = []
-#        for start_num in range(1, 26):
-#            self.starnum.append(start_num)
-#        self.header = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'}
-
-#     def get_article_urls(self):
-#         for start in self.starnum:
-#             start = str(start)
-#             html = requests.get(self.URL, params={'start':start},headers = self.header)
-#             soup = BeautifulSoup(html.text,"html.parser")
-#             name = soup.select('#content > div > div.article > ol > li > div > div.info > div.hd > a > span:nth-child(1)')
-#             for name in name:
-#                 print(name.get_text())
-
-# if __name__== "__main__":
-#     cls = Douban()
-#     cls.get_top250()
-
-
-
-
 def get_max_page_id(soup):
+    """
+    获得每类新闻最大页数，其中每页含25条新闻
+    """
     try:
         sinfo = soup.find_all("div", attrs={"class":"v-paginator"})
         ainfo = sinfo[0].find_all('a')
@@ -52,6 +21,9 @@ def get_max_page_id(soup):
     return pmax
 
 def get_article_urls(url, cid, category):
+    """
+    获取各类新闻下所有文章的链接
+    """
     url = url + "/" + str(cid)
     # html = requests.get(url, params={"page":pid}, headers=header)
     html = requests.get(url, headers=header)
@@ -81,6 +53,10 @@ def get_article_urls(url, cid, category):
 
 
 def get_article_contents(urls, category):
+    """
+    爬取每篇新闻的内容
+    """
+    # 借助正则表达式删除特殊字符
     a = re.compile(r'\n| |\xa0|\\xa0|\u3000|\\u3000|\\u0020|\u0020|\t|\r')
     with open("./南方人物周刊/{}.csv".format(category), "w", newline="", encoding="gb18030") as wf:
         writer = csv.writer(wf, doublequote=False, escapechar="\\")
